@@ -3,7 +3,7 @@ from flask import Flask, render_template
 
 
 app = Flask(__name__)
-skills_of_vacancies = ["Java", "Python", "C#", "JavaScript", "TypeScript", "Groovy", "Ruby", "Php", "Kotlin", "Swift", "Goland", "C++", "1C"]
+skills_of_vacancies = ["Java", "Python", "C#", "JavaScript", "TypeScript", "Groovy", "Ruby", "Php", "Kotlin", "Swift", "Goland", "C++"]
 
 @app.route('/')
 def index():

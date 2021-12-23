@@ -12,7 +12,7 @@ to_python = json.loads(info_about_vac.text)
 pages = to_python['pages']
 pattern = 'https://api.hh.ru/vacancies/[\d]{8}'
 skills = {"Java": 0, "Python": 0, "C#": 0, "Javascript": 0, "Typescript": 0, "Groovy": 0,
-          "Ruby": 0, "Php": 0, "Kotlin": 0, "Swift": 0, "Goland": 0, "C\+\+":0, "1С":0
+          "Ruby": 0, "Php": 0, "Kotlin": 0, "Swift": 0, "Goland": 0, "C\+\+":0
           }
 all_text = ""
 
@@ -56,8 +56,8 @@ connection = sqlite3.connect('database.db')
 with open('schema.sql') as f:
     connection.executescript(f.read())
 cur = connection.cursor()
-cur.execute("INSERT INTO skills (all_vacancies, java, python, c_sharp, javascript, typescript, groovy, ruby, php, kotlin, swift, goland, c_plus_plus, one_c) \
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+cur.execute("INSERT INTO skills (all_vacancies, java, python, c_sharp, javascript, typescript, groovy, ruby, php, kotlin, swift, goland, c_plus_plus) \
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
             (len(filtered_links),
              skill['Java'], 
              skill['Python'], 
@@ -70,8 +70,7 @@ cur.execute("INSERT INTO skills (all_vacancies, java, python, c_sharp, javascrip
              skill['Kotlin'], 
              skill['Swift'], 
              skill['Goland'],
-             skill["C\+\+"],
-             skill["1С"]
+             skill["C\+\+"]
              )
             )
 connection.commit()

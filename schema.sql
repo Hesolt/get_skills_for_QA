@@ -15,6 +15,5 @@ CREATE TABLE skills (
     kotlin INTEGER NOT NULL,
     swift INTEGER NOT NULL,
     goland INTEGER NOT NULL,
-    c_plus_plus INTEGER NOT NULL,
-    one_c INTEGER NOT NULL
+    c_plus_plus INTEGER NOT NULL
 );
