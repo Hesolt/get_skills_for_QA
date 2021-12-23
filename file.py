@@ -26,7 +26,7 @@ search_result = re.findall(pattern, all_text)
 filtered_links = set(search_result)
 
 
-def find_skills():
+def find_skills(skill_plus_link):
     for link in filtered_links:
         text_of_link = requests.get(link).text
         changed_text = text_of_link.title()
@@ -34,22 +34,35 @@ def find_skills():
             if skill == "Javascript" and (re.search("[ ,(]Javascript[\W]", changed_text) 
                                           or re.search("Js[\W]", changed_text)):
                 skills[skill] += 1
+                skill_plus_link[skill] += [link]
             elif skill == "Typescript" and (re.search("Typescript[\W]", changed_text) 
                                             or re.search("Ts[\W]", changed_text)):
                 skills[skill] += 1
+                skill_plus_link[skill] += [link]
             elif skill == "Goland" and (re.search("Goland[\W]", changed_text) 
                                         or re.search("Go[\W]", changed_text)):
                 skills[skill] += 1
+                skill_plus_link[skill] += [link]
             elif skill == "C\+\+" and (re.search("C\+\+[\W]", changed_text)
                                        or re.search("С\+\+[\W]", changed_text)): #russian C
                 skills[skill] += 1
+                skill_plus_link[skill] += [link]
             elif re.search(skill + "[\W]", changed_text):
                 skills[skill] += 1
+                skill_plus_link[skill] += [link]
             else:
                 continue
-    return skills
 
-skill = find_skills()
+skill_plus_link = {skill : [] for skill in skills}
+find_skills(skill_plus_link)
+print(skills)
+
+with open(r"C:\Users\admin\Documents\list_of_vacancies.txt", "w") as file:
+    for skill in skill_plus_link:
+        file.write(skill + ':' + '\n')
+        for link in skill_plus_link[skill]:
+            replaced_link = link.replace("https://api.hh.ru/vacancies/", "https://novosibirsk.hh.ru/vacancy/")
+            file.write(replaced_link + '\n')
 
 
 connection = sqlite3.connect('database.db')
@@ -59,18 +72,18 @@ cur = connection.cursor()
 cur.execute("INSERT INTO skills (all_vacancies, java, python, c_sharp, javascript, typescript, groovy, ruby, php, kotlin, swift, goland, c_plus_plus) \
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
             (len(filtered_links),
-             skill['Java'], 
-             skill['Python'], 
-             skill['C#'], 
-             skill['Javascript'], 
-             skill['Typescript'],
-             skill['Groovy'], 
-             skill['Ruby'], 
-             skill['Php'], 
-             skill['Kotlin'], 
-             skill['Swift'], 
-             skill['Goland'],
-             skill["C\+\+"]
+             skills['Java'], 
+             skills['Python'], 
+             skills['C#'], 
+             skills['Javascript'], 
+             skills['Typescript'],
+             skills['Groovy'], 
+             skills['Ruby'], 
+             skills['Php'], 
+             skills['Kotlin'], 
+             skills['Swift'], 
+             skills['Goland'],
+             skills["C\+\+"]
              )
             )
 connection.commit()
